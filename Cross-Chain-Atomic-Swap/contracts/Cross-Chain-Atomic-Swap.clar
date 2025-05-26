@@ -52,3 +52,47 @@
   }
 )
 
+;; Stores ZK proofs for confidential transactions
+(define-map confidential-proofs
+  { swap-id: (buff 32) }
+  {
+    proof-data: (buff 1024),
+    verified: bool,
+    verification-time: uint
+  }
+)
+
+;; Tracks signers for multi-signature swaps
+(define-map multi-sig-approvals
+  { swap-id: (buff 32), signer: principal }
+  { approved: bool, signature-time: uint }
+)
+
+;; Stores mixing pools for enhanced privacy
+(define-map mixing-pools
+  { pool-id: (buff 32) }
+  {
+    total-amount: uint,
+    participant-count: uint,
+    min-amount: uint,
+    max-amount: uint,
+    activation-threshold: uint,
+    active: bool,
+    creation-height: uint,
+    execution-delay: uint,
+    execution-window: uint
+  }
+)
+
+;; Tracks participants in mixing pools
+(define-map mixer-participants
+  { pool-id: (buff 32), participant-id: uint }
+  {
+    participant: principal,
+    amount: uint,
+    blinded-output-address: (buff 64),
+    joined-height: uint,
+    withdrawn: bool
+  }
+)
+

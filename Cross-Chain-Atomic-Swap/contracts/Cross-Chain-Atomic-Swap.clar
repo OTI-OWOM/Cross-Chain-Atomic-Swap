@@ -378,3 +378,34 @@
   )
 )
 
+;; Change contract admin
+(define-public (set-contract-admin (new-admin principal))
+  (let (
+    (admin (var-get contract-admin))
+  )
+    ;; Only current admin can change admin
+    (asserts! (is-eq tx-sender admin) (err ERR-UNAUTHORIZED))
+    
+    ;; Set new admin
+    (var-set contract-admin new-admin)
+    
+    ;; Return success
+    (ok true)
+  )
+)
+
+;; Get swap details by ID
+(define-read-only (get-swap-details (swap-id (buff 32)))
+  (map-get? swaps { swap-id: swap-id })
+)
+
+;; Get proof verification status
+(define-read-only (get-proof-status (swap-id (buff 32)))
+  (map-get? confidential-proofs { swap-id: swap-id })
+)
+
+;; Get mixing pool details
+(define-read-only (get-mixing-pool-details (pool-id (buff 32)))
+  (map-get? mixing-pools { pool-id: pool-id })
+)
+
